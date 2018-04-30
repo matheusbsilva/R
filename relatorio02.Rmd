@@ -1,0 +1,142 @@
+---
+title: "Relatório 2"
+author: "Matheus Batista Silva 15/0018029"
+date: "29 de abril de 2018"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::read_chunk('~/Documentos/ds4all/relatorio2.R')
+source('~/Documentos/ds4all/relatorio2.R')
+```
+# Introdução
+
+Os dados podem ser vistos como uma forma de responder perguntas
+pertinentes à humanidade que talvez ainda não tenham sido imaginadas. A área de
+ciência de dados é responsável por tratar e analisar dados com o objetivo de extrair
+conhecimento.
+Visando esse objetivo de construção de conhecimento, a análise de conjuntos
+de dados relacionados a Universidade de Brasília podem fornecer meios para inferir
+pontos de melhoria ou áreas de destaque. Serão analisados os conjuntos de dados
+referentes as teses e dissertações diponibilizados pela Biblioteca de teses e dissertações da UnB,
+assim um conjunto de informações sobre orientações realizadas na Universidade de Brasília.
+
+# Metodologia
+
+Para realizar o processo de análise de dados foi utilizada a plataforma R Studio
+que trabalha com a linguagem R, assim como os pacotes ```jsonlite``` para importação
+dos dados disponíveis em formato JSON, ```dplyr``` para análise estrutural dos dados e ```ggplot2``` para a contrução de gráficos com as informações analisadas.
+Para analisar a estruturação dos dados foram utilizadas as funções ```glimpse()```, ```names()``` e ```View()```. As funções disponíveis no pacote ```dplyr``` foram utilizadas para realizar a seleção de dados específivos, ```select()```, filtragem ```filter()```, assim como a construção de novas informações com a união das disponívels, ```mutate()```. Através do pacote ```ggplot2``` foram gerados gráficos de diversos formatos utilizando as funções diponibilizadas pelo pacote, ```ggplot()```, ```geom_bar()```, etc.
+
+# Resultados
+
+## BDTD
+Os dados diponibilizados pela Biblioteca de teses e dissertações da UnB estão estruturados da seguinte maneira:
+```{r}
+glimpse(df_bdtd)
+```
+
+Pode-se observar que existem **18462** registros com informações gerais sobre as teses e dissertações como título, descrição, autores, tópicos abordados, data e tipo da publicação. Existem publicações de 1964 até 2017.
+
+```{r}
+year_pubs <- select(df_bdtd, publishDate) 
+year_pubs <- as.data.frame(lapply(year_pubs, unlist), stringsAsFactors = FALSE)
+year_pubs$publishDate <- as.numeric(year_pubs$publishDate)
+summary(year_pubs)
+```
+
+Ao selecionar os dados referentes ao ano de publicação, podemos observar a frequência de publicações por ano de 2001 a 2017, as publicações anteriores a 2001 não foram consideradas para uma melhor visualização do gráfico, pois os valores são mínimos.
+
+```{r}
+filtered_pub <- filter(pub_year, year > 2000)
+ggplot(filtered_pub, aes(x = year, y = freq)) +
+                  geom_bar(stat = "identity", fill = "#388E8E") +
+                  scale_x_continuous(breaks = filtered_pub$year) +
+                  labs(title = "Frequência de publicações BDTD", 
+                       x = "Ano de publicação", y = "Número de publicações")
+```
+
+Das publicações disponíveis pode-se concluir que pouco mais de 75% são teses ou dissertações de mestrado, enquanto os 25% restantes são de doutorado.
+
+```{r}
+ggplot(format_bdtd, aes(x="", y=Freq, fill=Tipo)) + 
+  geom_bar(width = 1, stat = "identity") + 
+  coord_polar("y", start=0) + 
+  scale_y_continuous(labels = scales::percent) +
+  labs(y="Tipos de teses", x="")
+```
+
+## Orientações UnB
+Os dados disponíveis sobre as orientações da Universidade de Brasília estão dividos em orientações em andamento e concluídas nas áreas de pós-doutorado, doutorado e mestrado, assim como orientações em andamento da graduação e iniciação científica. Os dados são referentes ao período de 2012 a 2017
+```{r}
+names(orientacao_dados)
+```
+```{r}
+names(orientacao_dados[[1]])
+```
+```{r}
+names(orientacao_dados[[1]][[1]])
+```
+
+### Abordagem de análise
+
+Para fazer a análise dos dados foram criados dois dataframes, um referente as orientações **em andamento** de 2012 a 2017 de todos os tipos e outro com as informações sobre as orientações do mesmo período mas que foram **concluídas**.
+```{r}
+orientacoes_andamento <- data.frame()
+for(i in 1:5)
+  for(j in 1:length(orientacao_dados[[i]]))
+    orientacoes_andamento <- rbind(orientacoes_andamento, as.data.frame(orientacao_dados[[i]][[j]]))
+
+orientacoes_concluidas <- data.frame()
+for(i in 6:8)
+  for(j in 1:length(orientacao_dados[[i]]))
+    orientacoes_concluidas <- rbind(orientacoes_concluidas, as.data.frame(orientacao_dados[[i]][[j]]))
+
+```
+
+### Orientações Concluídas x Em andamento
+A partir dos dataframes construídos pode-se observar a porcentagem de orientações que foram concluídas e as que ainda estão em andamento de todo o período disponível no dataset.
+```{r}
+# Para fazer a observação em porcentagem
+orientacoes_tipo_year$soma <- orientacoes_tipo_year$soma / sum(orientacoes_tipo_year$soma)
+
+ggplot(orientacoes_tipo_year, aes(x="", y=soma, fill=Tipos)) + 
+  geom_bar(width = 1, stat = "identity") + 
+  coord_polar("y", start=0) + 
+  scale_y_continuous(labels = scales::percent) +
+  labs(x="",y="Estado das orientações")
+```
+
+### Evolução histórica das orientações
+A partir dos dados disponíveis pode-se analisar a evolução das orientações, tanto em andamento, quanto concluídas durante o período de tempo disponível(2012-2017).
+#### Orientações em Andamento
+```{r}
+ggplot(years_andamento, aes(x = Ano, y = Frequencia)) + 
+                          geom_bar(stat="identity", fill = "#3F88C5") +
+                          scale_x_continuous(breaks = years_andamento$Ano) +
+                          labs(title = "Frequência de orientações em andamento", 
+                               x = "Ano de orientação", y = "Número de orientações")
+```
+
+#### Orientações Concluídas
+```{r}
+ggplot(years_concluida, aes(x = Ano, y = Frequencia)) + 
+                          geom_bar(stat="identity", fill = "#44BBA4") +
+                          scale_x_continuous(breaks = years_andamento$Ano) +
+                          labs(title = "Frequência de orientações em andamento", 
+                               x = "Ano de orientação", y = "Número de orientações")
+```
+
+#### Bolsas de orientação
+Ao analisar os dados referentes a diponibilidade de bolsas para as orientações que ocorrem na Universidade de Brasília pode-se concluir que a maior parte **não** disponibiliza bolsa.
+```{r}
+ggplot(bolsas_orient, aes(x="", y=Freq, fill=Disponibilizam)) + 
+                      geom_bar(width = 1, stat = "identity") + 
+                      coord_polar("y", start=0) + 
+                      scale_y_continuous(labels = scales::percent) +
+                      labs(x="",y="Orientações que disponibilizam bolsas")
+```
+
+# Conclusão
+A partir da análise da estruturação dos dados e os indicadores gerados, pode-se concluir que os dados disponibilizados pela **BDTD** trazem informações importantes sobre as teses e dissertações desenvolvidas na Universidade de Brasília, e oferece uma ótima oportunidade de pesquisa em relação aos **tópicos** que as teses e dissertações abordam. Em relação aos dados referentes as orientações pode-se constatar que uma oportunidade de pesquisa seria buscar uma relação com a **natureza** da orientação e a disponibilidade de **bolsa**, assim como quais **temas** são mais abordados.
