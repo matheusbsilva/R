@@ -1,0 +1,136 @@
+---
+title: "Relatório 03"
+author: "Matheus Batista Silva"
+date: "26 de maio de 2018"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::read_chunk('relatorio03.R')
+source('relatorio03.R')
+```
+
+## Introdução e Contextualização
+&nbsp;&nbsp;&nbsp;&nbsp; Os dados podem ser vistos como uma forma de responder perguntas pertinentes à humanidade que talvez ainda não tenham sido imaginadas. A área de ciência de dados é responsável por tratar e analisar dados com o objetivo de extrair conhecimento. Visando esse objetivo de construção de conhecimento, a análise de conjuntos de dados relacionados a Universidade de Brasília podem fornecer meios para inferir pontos de melhoria ou áreas de destaque. A partir desse contexto de ciência de dados e buscando conhecer mais sobre os programas de pesquisa trabalhados na Universidade de Brasília, o programa de pesquisa de Artes Cênicas foi escolhido para exploração dos dados referentes a publicações nessa área.  
+
+&nbsp;&nbsp;&nbsp;&nbsp; Arte cênica abrange o estudo de todo tipo de expressão da criatividade humana através de performance utilizando a voz, instrumentos musicais, dança, teatro, etc. Na Universidade de Brasília o curso foi criado em 1979 após um período de opressão contra as linguagens artísticas que ocorreu na época da ditadura militar. O Departamento de Artes Cênicas surgiu em 1989, juntamente com os Departamentos de Artes Visuais e de Música.
+
+&nbsp;&nbsp;&nbsp;&nbsp; No programa de pesquisa existem cerca de 15 pesquisadores, que em sua maioria fazem parte do corpo docente da Universidade de Brasília, porém um participante faz parte da Universidade Federal do Rio Grande do Sul. Dentre os pesquisadores envolvidos três são colaboradores enquanto os demais são permanentes. Dez pesquisadores possuem senioridade igual ou superior a 8. Além disso todos os envolvidos no programa de pesquisa possuem Doutorado.As áreas de atuação dos pesquisadores são: artes, antropologia, comunicação, educação, filosofia, letras e sociologia.
+
+&nbsp;&nbsp;&nbsp;&nbsp; Atualmente dentre as principais linhas de pesquisa em Artes Cênicas pode-se destacar: História do Teatro, que abrange a pesquisa histórica do Teatro Brasileiro e Teatro Mundial, tanto do ocidente quanto do oriente, tem como objetivo investigar a relação do teatro com a história, por meio estudos que evidenciem como eventos da evolução social impactaram no cenário das artes cênicas; Texto e Cena, tem como foco a análise de questões relativas à atuação, encenação e dramaturgia e o seus impactos na produção do texto cênico; Formação do Artista Teatral, que engloba os diferentes processos, metodologias e conceitos que formam o sistema de ensino e aprendizagem do artista teatral contemporâneo; Teatro e Educação, busca investigar as atividades cênicas no processo de ensino, como as prática teatral faz parte de uma ação cultural, levando em conta a relação entre arte teatral e sociedade atualmente, procurando relacionar como o teatro pode ser usado como uma ferramenta de transformação social.
+
+## Referencial Teórico
+
+&nbsp;&nbsp;&nbsp;&nbsp;Atualmente o mundo é provido por uma gigantesca quantidade de dados, e esses dados guardam uma grande quantidade conhecimento que muitas vezes não é explorada. Existe um esforço para sistematizar a análise de grandes bases de dados com o objetivo de extrair o máximo de conhecimento, a área responsável por essa sistematização é conhecida como “Knowledge-Discovery in Databases”(KDD). Uma das etapas fundamentais do processo KDD é a “Mineração de Dados”, que consiste em explorar o grande volume de dados em busca de padrões, como regras de associação ou sequências temporais, com o objetivo de relacionar as diferentes variáveis que constituem o Dataset.[1]
+
+
+## Metodologia
+&nbsp;&nbsp;&nbsp;&nbsp;Para fazer a análise dos dados utilizou-se a metodologia CRISP-DM, que significa Processo Padrão Inter-indústrias para Mineração de Dados. é um modelo consolidado de processo para mineração de dados, que consiste em seis fases, que serão descritas logo em seguida. A metodologia CRISP-DM surgiu em 1996 com o objetivo de fornecer um processo para as pessoas com pouco experiência no campo de mineração de dados, garantindo assim uma qualidade na apresentação dos resultados e conclusões sobre os dados minerados. O processo consiste em seis etapas:
+
+### 1. Entendimento sobre o negócio
+&nbsp;&nbsp;&nbsp;&nbsp; Nesta etapa o responsável pela mineração deve buscar informações para compreender o problema a ser resolvido, ou seja, entender o contexto organizacional, quais os objetivos e expectativas em relação a análise como um todo. É importante entender também quais os impedimentos que podem impactar no estudo.
+
+&nbsp;&nbsp;&nbsp;&nbsp; No estudo do qual se trata esse documento primeiramente buscou-se informações sobre o contexto do curso de Artes Cênicas da Universidade de Brasília, quando surgiu, dificuldades enfrentadas até a consolidação do curso, além disso foi levantado informações sobre o perfil dos pesquisadores envolvidos no programa e suas áreas de conhecimento, e por fim quais as linhas de pesquisa em destaque atualmente sobre o assunto.
+
+### 2. Compreensão dos dados
+&nbsp;&nbsp;&nbsp;&nbsp; Após esclarecer o contexto sobre o negócio é importante agora inspecionar, organizar e descrever os dados disponíveis, além disso é essencial buscar quais dados podem ser relevantes para resolver o problema levantado na etapa anterior.
+
+&nbsp;&nbsp;&nbsp;&nbsp; A compreensão dos dados no contexto do dataset referente as publicações do curso de Artes Cênicas da Universidade de Brasília utilizou primeiramente a função ```fromJSON()``` disponibilizada pela biblioteca ```jsonlite``` para fazer a leitura dos dados que estavam no formato JSON, em seguida utilizou-se as funções ```glimpse()``` e ```View()``` para observar a estrutura dos dados
+
+### 3. Preparação dos dados
+&nbsp;&nbsp;&nbsp;&nbsp; Nesta etapa o dataset deve ser filtrado, retirando assim as partes que não relevantes para atingir o objetivo da análise, pode-se dividir essa fase em cinco atividades: Seleção dos dados, limpeza dos dados, construção dos dados, integração dos dados e formatação dos dados.
+
+&nbsp;&nbsp;&nbsp;&nbsp; Para fazer a filtragem formatação dos dados utilizou-se as funções disponíveis na biblioteca ```dplyr```, como ```filter()```, ```summarise()``` e ```select()```. Além disso para a formatação dos dados em diferentes tipos de apresentações gráficas utilizou-se a biblioteca ```ggplot2```.
+
+### Observação
+&nbsp;&nbsp;&nbsp;&nbsp; As últimas três etapas do processo serão trabalhadas na próxima versão do relatório, **onde será definido a modelagem** que será utilizada para trabalhar os datasets, então serão apresentados aqui somente um resumo das próximas fases.
+
+### 4. Modelagem
+&nbsp;&nbsp;&nbsp;&nbsp; O objetivo desta etapa é definir e aplicar uma técnica de modelagem adequada para os dados disponíveis no contexto da análise e que atende o objetivo levantado na primeira etapa do processo.
+
+### 5. Avaliação
+&nbsp;&nbsp;&nbsp;&nbsp; A etapa de Avaliação tem como objetivo acompanhar os resultados obtidos e determinar se a modelagem está adequada para atender o problema organizacional. Além disso avalia-se também o processo, caso existe alguma não conformidade com a necessidade organizacional ou o processo o ciclo pode ser reiniciado.
+
+
+### 6. Desenvolvimento
+&nbsp;&nbsp;&nbsp;&nbsp; Na última etapa todo o conhecimento obtido por meio do processo de mineração poderá ser aplicado no contexto organizacional. O objetivo dessa etapa é fornecer uma entrega aplicável a organização baseada nas análises dos dados.
+
+## Resultados
+
+&nbsp;&nbsp;&nbsp;&nbsp;A estrutura inicial dos dados de **publicações** do programa **Artes Cênicas** é seguinite:
+```{r}
+summary(pub_artes)
+```
+&nbsp;&nbsp;&nbsp;&nbsp;Pode-se observar que as publicações estão divididas em **sete tipos**: periódico, livro, capítulo de livro, texto em jornais, evento, artigo aceito e demais tipos de produção bibliográfica.
+
+&nbsp;&nbsp;&nbsp;&nbsp;Cada tipo de publicação está dividida entre o período de **2010 a 2017**.
+```{r}
+summary(pub_artes$PERIODICO)
+```
+
+Para fazer uma análise da porcentagem de publicações de cada tipo primeiramente foi necessário agrupar todos as publicações de todos os anos de cada tipo, o agrupamento se deu da seguinte maneira, o mesmo código foi reaproveitado para os outros tipos de publicações.
+```{r}
+# Agrupando os artigos aceitos de todos os anos
+total_artigos <- data.frame()
+for (i in 1:length(pub_artes$ARTIGO_ACEITO)){
+  total_artigos <- rbind(total_artigos, as.data.frame(pub_artes$ARTIGO_ACEITO[[i]]))
+}
+```
+
+A partir disso podemos observar o total de publicações por tipo:
+```{r}
+ggplot(total_pub, aes(x="", y=Total, fill=Tipo)) +
+  geom_bar(width = 1, stat = "identity") + 
+  coord_polar("y", start=0) + 
+  scale_y_continuous(labels = scales::percent) +
+  labs(y="Tipos de publicações")
+```
+
+Além de observar o tipo das publicações, podemos analisar a frequência de publicações por ano dentre o período de 2010 a 2017 de todos os tipo de publicações:
+```{r fig1, fig.height = 3, fig.width = 5}
+ggplot(total_pub_year, aes(x=Ano, y=Total)) + 
+  geom_bar(stat = "identity", fill = "#388E8E") +
+  labs(title = "Frequência de publicações por ano", x = "Ano de publicação", y = "Número de publicações")
+```
+
+As publicações referentes a periódicos foram publicados em quse 90 meios diferentes:
+```{r}
+summary(unique_periodicos, maxsum = 20)
+```
+
+As publicações referentes a eventos tiveram diferentes países de origem:
+```{r}
+num_pais_eventos
+```
+
+Já em relação ao país de publicação dos livros, observou-se que somente um foi publicado fora do Brasil:
+```{r}
+num_pais_livros
+```
+
+Ao analisar as publicações de texto em jornais pode-se concluir o seguinte sobre sua natureza:
+```{r}
+ggplot(num_natureza_text, aes(x="", y=Freq, fill=natureza_text)) +
+  geom_bar(width = 1, stat = "identity") + 
+  coord_polar("y", start=0) + 
+  scale_y_continuous(labels = scales::percent) +
+  labs(y="Natureza das publicações de texto")
+```
+
+A maior parte das publicações de texto foram feitas em jornais de notícias.
+
+Pode-se analisar também a natureza das demais publicações encontradas no dataset:
+```{r}
+ggplot(num_natureza_demais, aes(x="", y=Freq, fill=natureza_demais)) +
+  geom_bar(width = 1, stat = "identity") + 
+  coord_polar("y", start=0) + 
+  scale_y_continuous(labels = scales::percent) +
+  labs(y="Natureza das demais publicações")
+```
+
+\pagebreak
+
+## Referências Bibliográficas
+
+[1] R. Balaniuk. A Mineração de Dados como apoio ao Controle Externo, 2010.
